@@ -1,0 +1,60 @@
+================================================================================
+Attributes
+================================================================================
+
+class Cons inherits List {
+  xcar : Int;
+  xcdr : List;
+};
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (class_item
+    name: (type_identifier)
+    inherits: (inherits
+      (type_identifier))
+    features: (field_declaration_list
+      (attribute_declaration
+        name: (identifier)
+        type: (type_identifier))
+      (attribute_declaration
+        name: (identifier)
+        type: (type_identifier)))))
+
+================================================================================
+Classes
+================================================================================
+
+class P {
+  f(): Int { 1 };
+};
+
+class C inherits P {
+  f(): String { "1" };
+};
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (class_item
+     name: (type_identifier)
+     features: (field_declaration_list
+      (method_declaration
+        name: (identifier)
+        parameters: (parameters)
+        return_type: (type_identifier)
+        body: (block
+          (integer_literal)))))
+  (class_item
+    name: (type_identifier)
+    inherits: (inherits
+      (type_identifier))
+    features: (field_declaration_list
+      (method_declaration
+        name: (identifier)
+        parameters: (parameters)
+        return_type: (type_identifier)
+        body: (block
+          (string_literal
+            (string_content)))))))

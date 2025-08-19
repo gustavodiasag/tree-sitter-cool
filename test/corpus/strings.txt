@@ -1,0 +1,24 @@
+================================================================================
+Escape
+================================================================================
+
+class S {
+  escapedStr() : String {
+    "This \
+    is OK"
+  };
+};
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (class_item
+    name: (type_identifier)
+    features: (field_declaration_list
+      (method_declaration
+        name: (identifier)
+        parameters: (parameters)
+        return_type: (type_identifier)
+        body: (block
+          (string_literal
+            (string_content)))))))
