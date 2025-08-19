@@ -9,7 +9,7 @@
 
 const PREC = {
   /// '.'
-  field: 8, 
+  call: 8, 
   /// '@'
   _super: 7,
   /// '~'
@@ -33,7 +33,7 @@ const NON_SPECIAL_PUNCTUATION = [
   '+', ':', '=>', ';', '<-', ',', '@',
 ];
 
-const basicClasses = ['Bool', 'Int', 'IO', 'Object', 'String', 'SELF_TYPE'];
+const basicTypes = ['Bool', 'Int', 'IO', 'Object', 'String', 'SELF_TYPE'];
 
 module.exports = grammar({
   name: 'cool',
@@ -45,13 +45,11 @@ module.exports = grammar({
   ],
 
   rules: {
-    source_file: $ => seq(
-      repeat($.class_item),
-    ),
+    source_file: $ => repeat($.class_item),
 
     class_item: $ => seq(
       'class',
-      field('name', $._type_identifier),
+      field('name', $.type_identifier),
       optional(field('inherits', $.inherits)),
       field('features', $.field_declaration_list),
       ';',
@@ -59,7 +57,7 @@ module.exports = grammar({
 
     inherits: $ => seq(
       'inherits',
-      $._type_identifier,
+      $.type_identifier,
     ),
 
     field_declaration_list: $ => seq(
@@ -74,21 +72,19 @@ module.exports = grammar({
     ),
 
     attribute_declaration: $ => seq(
-      field('name', $identifier),
+      field('name', $.identifier),
       ':',
-      field('type', $._type_identifier),
+      field('type', $.type_identifier),
       ';',
     ),
 
     method_declaration: $ => seq(
       field('name', $.identifier),
       field('parameters', $.parameters),
-      ':',
-      optional(seq(
-        ':',
-        field('return_type', choice($._type_identifier, self_type)))
-      ),
+      ':', // Is a return type is always required?
+      field('return_type', $.type_identifier),
       field('body', $.block),
+      ';',
     ),
 
     parameters: $ => seq(
@@ -98,9 +94,9 @@ module.exports = grammar({
     ),
 
     parameter: $ => seq(
-      field('name', $identifier),
+      field('name', $.identifier),
       ':',
-      field('type', $._type_identifier),
+      field('type', $.type_identifier),
     ),
 
     block: $ => seq(
@@ -108,6 +104,148 @@ module.exports = grammar({
       repeat($._expression),
       '}',
     ),
+
+    _expression: $ => choice(
+      $._literal,
+      $.identifier,
+      $.assignment_expression,
+      $.dispatch_expression,
+      $.if_expression,
+      $.while_expression,
+      $.block,
+      $.let_expression,
+      $.case_expression,
+      $.new_expression,
+      $.isvoid_expression,
+      $.unary_expression,
+      $.binary_expression,
+    ),
+
+    assignment_expression: $ => prec.left(PREC.assign, seq(
+      field('left', $.identifier),
+      '<-',
+      field('right', $._expression),
+    )),
+
+    dispatch_expression: $ => prec(PREC.call, seq(
+      optional(seq(
+        field('value', $._expression),
+        optional(seq('@', $.type_identifier)),
+        '.',
+      )),
+      field('method', $.identifier),
+      field('arguments', $.args),
+    )),
+
+    args: $ => seq(
+      '(',
+      sepBy(',', $._expression),
+      ')',
+    ),
+
+    if_expression: $ => prec.right(seq(
+      'if',
+      field('condition', $._expression),
+      'then',
+      field('consequence', $._expression),
+      optional(seq(
+        'else',
+        field('alternative', $._expression),
+      )),
+      'fi',
+    )),
+
+    while_expression: $ => seq(
+      'while',
+      field('condition', $._expression),
+      'loop',
+      field('body', $._expression),
+      'pool'
+    ),
+
+    let_expression: $ => seq(
+      'let',
+      sepBy(',', seq(
+        field('name', $.identifier),
+        ':',
+        field('type', $.type_identifier),
+        optional(seq('<-', field('right', $._expression))),
+      )),
+      'in',
+      field('body', $._expression),
+    ),
+
+    case_expression: $ => seq(
+      'case',
+      field('value', $._expression),
+      'of'
+      sepBy(';', $.case_arm),
+      field('body', $.case_block),
+      'esac'
+    ),
+
+    case_arm: $ => prec.right(seq(
+      field('pattern', $.case_pattern),
+      '=>'
+      field('value', $._expression),
+    )),
+
+    case_pattern: $ => seq($.identifier, ':', $.type_identifier),
+
+    new_expression: $ => seq(
+      'new',
+      field('type', $.type_identifier),
+    ),
+
+    isvoid_expression: $ => prec(PREC.isvoid, seq(
+      'isvoid',
+      $._expression,
+    )),
+
+    unary_expression: $ => prec(PREC.comp, seq(
+      '~',
+      $._expression,
+    )),
+
+    binary_expression: $ => {
+      const table = [
+        [PREC.comparative, choice('<=', '<', '=')],
+        [PREC.additive, choice('+', '-')],
+        [PREC.multiplicative, choice('*', '/')],
+      ];
+
+      // @ts-ignore
+      return choice(...table.map(
+        ([precedence, operator]) => pref.left(precedence, seq(
+          field('left', $._expression),
+          // @ts-ignore
+          field('operator', $.operator),
+          field('right', $._expression),
+      ))));
+    },
+
+    _literal: $ => choice(
+      $.boolean_literal,
+      $.integer_literal,
+      $.string_literal,
+    ),
+
+    boolean_literal: _ => choice('true', 'false'),
+
+    integer_literal: _ => token(/[0-9]+/),
+
+    string_literal: $ => seq(
+      '"',
+      repeat(choice(
+        $.string_content,
+        $.escape_sequence,
+      )),
+      token.immediate('"'),
+    ),
+
+    string_content: _ => /[^"\\\n]+/,
+
+    escape_sequence: _ => /\\[bntf"]/,
 
     comment: $ => choice(
       $.inline_comment,
@@ -129,6 +267,13 @@ module.exports = grammar({
       ),
       '*)',
     ),
+
+    // Identifiers are strings consisting of letters, sigits, and the underscore
+    // character. Type identifiers begin with a capital letter; object
+    // identifiers begin with a lower case letter.
+    type_identifier: $ => /[\p{Lu}][_\p{XID_Continue}]*/,
+
+    identifier: _ => /[_\p{XIDStart}][\p{XID_Continue}]*/,
   },
 });
 
