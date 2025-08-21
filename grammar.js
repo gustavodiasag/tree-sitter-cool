@@ -44,30 +44,35 @@ module.exports = grammar({
     $.block_comment,
   ],
 
+  externals: $ => [
+    $.string_content,
+    $._error_sentinel,
+  ],
+
   rules: {
     source_file: $ => repeat($.class_item),
+
+    // Section - Declarations
 
     class_item: $ => seq(
       'class',
       field('name', $.type_identifier),
-      optional(field('inherits', $.inherits)),
+      optional(seq(
+        'inherits',
+        field('inherits', $.type_identifier))),
       field('features', $.field_declaration_list),
       ';',
     ),
 
-    inherits: $ => seq(
-      'inherits',
-      $.type_identifier,
-    ),
-
     field_declaration_list: $ => seq(
       '{',
-      repeat(
+      repeat(seq(
         choice(
           $.attribute_declaration,
           $.method_declaration,
         ),
-      ),
+        ';',
+      )),
       '}',
     ),
 
@@ -76,16 +81,16 @@ module.exports = grammar({
       ':',
       field('type', $.type_identifier),
       optional(seq('<-', field('right', $._expression))),
-      ';',
     ),
 
     method_declaration: $ => seq(
       field('name', $.identifier),
       field('parameters', $.parameters),
-      ':',
+      ':', // Is is required for methods to return a type?
       field('return_type', $.type_identifier),
-      field('body', $.block),
-      ';',
+      '{',
+      field('body', $._expression),
+      '}',
     ),
 
     parameters: $ => seq(
@@ -118,6 +123,7 @@ module.exports = grammar({
       $.not_expression,
       $.unary_expression,
       $.binary_expression,
+      $.parenthesized_expression,
     ),
 
     assignment_expression: $ => prec.left(PREC.assign, seq(
@@ -130,7 +136,9 @@ module.exports = grammar({
       optional(
         prec(PREC.super, seq(
           field('value', $._expression),
-          optional(seq('@', $.type_identifier)),
+          optional(seq(
+            '@', 
+            field('type', $.type_identifier))),
           '.',
         )),
       ),
@@ -236,11 +244,17 @@ module.exports = grammar({
       return choice(...table.map(
         ([precedence, operator]) => prec.left(precedence, seq(
           field('left', $._expression),
-          // @ts-ignore
+           // @ts-ignore
           field('operator', operator),
           field('right', $._expression),
       ))));
     },
+
+    parenthesized_expression: $ => seq(
+      '(',
+      $._expression,
+      ')',
+    ),
 
     _literal: $ => choice(
       $.boolean_literal,
@@ -260,8 +274,6 @@ module.exports = grammar({
       )),
       token.immediate('"'),
     ),
-
-    string_content: _ => /[^"\\\n]+/,
 
     escape_sequence: _ => /\\[bntf"]/,
 
