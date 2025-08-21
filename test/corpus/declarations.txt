@@ -44,8 +44,7 @@ class C inherits P {
         name: (identifier)
         parameters: (parameters)
         return_type: (type_identifier)
-        body: (block
-          (integer_literal)))))
+        body: (integer_literal))))
   (class_item
     name: (type_identifier)
     inherits: (inherits
@@ -55,6 +54,64 @@ class C inherits P {
         name: (identifier)
         parameters: (parameters)
         return_type: (type_identifier)
+        body: (string_literal
+          (string_content))))))
+
+================================================================================
+Methods
+================================================================================
+
+class String {
+  length() : Int {
+    10
+  };
+
+  concat(s : String) : String {
+    {
+      self + s;
+    }
+  };
+
+  substr(i : Int, l : Int) : String {
+    self.substr(i, l)
+  };
+};
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (class_item
+    name: (type_identifier)
+    features: (field_declaration_list
+      (method_declaration
+        name: (identifier)
+        parameters: (parameters)
+        return_type: (type_identifier)
+        body: (integer_literal))
+      (method_declaration
+        name: (identifier)
+        parameters: (parameters
+          (parameter
+            name: (identifier)
+            type: (type_identifier)))
+        return_type: (type_identifier)
         body: (block
-          (string_literal
-            (string_content)))))))
+          (binary_expression
+            left: (self),
+            right: (identifier))))
+      (method_declaration
+        name: (identifier)
+        parameters: (parameters
+          (parameter
+            name: (identifier)
+            type: (type_identifier))
+          (parameter
+            name: (identifier)
+            type: (type_identifier)))
+        return_type: (type_identifier)
+        body: (dispatch_expression
+          value: (self)
+          method: (identifier)
+          arguments: (arguments
+            (identifier)
+            (identifier)))))))
