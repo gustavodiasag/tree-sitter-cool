@@ -1,9 +1,9 @@
 ================================================================================
-Escape
+Escaped
 ================================================================================
 
 class S {
-  escapedStr() : String {
+  escapedLn() : String {
     "This \
     is OK"
   };
@@ -19,6 +19,19 @@ class S {
         name: (identifier)
         parameters: (parameters)
         return_type: (type_identifier)
-        body: (block
-          (string_literal
-            (string_content)))))))
+        body: (string_literal
+          (string_content))))))
+
+================================================================================
+Unescaped
+:error
+================================================================================
+
+class S {
+  unescapedLn() : String {
+    "This is
+    not OK"
+  };
+};
+
+--------------------------------------------------------------------------------
