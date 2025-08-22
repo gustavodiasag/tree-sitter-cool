@@ -9,11 +9,19 @@ enum TokenType
 
 static inline bool process_string(TSLexer* lexer);
 
+/**
+* The Tree-sitter documentation states that, when creating external scanners,
+* five functions must be defined with specific names, according to the language
+* in question. Those are:
+*
+* `create`, `destroy`, `serialize`, `deserialize` and `scan`.
+*/
+
 void* tree_sitter_cool_external_scanner_create()
 {
     // This function should create a custom scanner object. It will only be
-    // calle once anytime the language is set of a parser. If the external
-    // scanner doesn't need to mintain any state, it's ok to return `NULL`
+    // called once, anytime the language is set of a parser. If the external
+    // scanner doesn't need to maintain any state, it's ok to return `NULL`
     return NULL;
 }
 
@@ -61,6 +69,12 @@ static inline char advance(TSLexer* lexer)
     return (char)lexer->lookahead;
 }
 
+/**
+* A string may not contain EOF, a non-escaped newline character and the null
+* character. Strings cannot cross file boundaries.
+*
+* Any other character may be included in a string.
+*/
 static inline bool process_string(TSLexer* lexer)
 {
     bool has_content = false;
