@@ -12,8 +12,7 @@ class Cons inherits List {
 (source_file
   (class_item
     name: (type_identifier)
-    inherits: (inherits
-      (type_identifier))
+    inherits: (type_identifier)
     features: (field_declaration_list
       (attribute_declaration
         name: (identifier)
@@ -47,8 +46,7 @@ class C inherits P {
         body: (integer_literal))))
   (class_item
     name: (type_identifier)
-    inherits: (inherits
-      (type_identifier))
+    inherits: (type_identifier)
     features: (field_declaration_list
       (method_declaration
         name: (identifier)
@@ -97,7 +95,7 @@ class String {
         return_type: (type_identifier)
         body: (block
           (binary_expression
-            left: (self),
+            left: (self)
             right: (identifier))))
       (method_declaration
         name: (identifier)

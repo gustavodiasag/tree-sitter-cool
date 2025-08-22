@@ -168,49 +168,348 @@ class E {
 
 ================================================================================
 Loops
-:skip
 ================================================================================
 
+class E {
+  loop() : Object {
+    {
+      l <- new List.cons(1);
+      while (not l.isNil()) loop
+        {
+          print_list(l);
+          l <- l.tail();
+        }
+      pool;
+    }
+  };
+};
+
 --------------------------------------------------------------------------------
+
+(source_file
+  (class_item
+    name: (type_identifier)
+    features: (field_declaration_list
+      (method_declaration
+        name: (identifier)
+        parameters: (parameters)
+        return_type: (type_identifier)
+        body: (block
+          (assignment_expression
+            left: (identifier)
+            right: (dispatch_expression
+              value: (new_expression
+                type: (type_identifier))
+              method: (identifier)
+              arguments: (arguments
+                (integer_literal))))
+          (while_expression
+            condition: (parenthesized_expression
+              (not_expression
+                (dispatch_expression
+                  value: (identifier)
+                  method: (identifier)
+                  arguments: (arguments))))
+            body: (block
+              (dispatch_expression
+                method: (identifier)
+                arguments: (arguments
+                  (identifier)))
+              (assignment_expression
+                left: (identifier)
+                right: (dispatch_expression
+                  value: (identifier)
+                  method: (identifier)
+                  arguments: (arguments))))))))))
 
 ================================================================================
 Blocks
-:skip
 ================================================================================
 
+class E {
+  wacky: Object <-
+    {
+      5;
+      {
+        true;
+        {
+          "Thelonious Monk";
+        };
+      };
+    };
+};
+
 --------------------------------------------------------------------------------
+
+(source_file
+  (class_item
+    name: (type_identifier)
+    features: (field_declaration_list
+      (attribute_declaration
+        name: (identifier)
+        type: (type_identifier)
+        right: (block
+          (integer_literal)
+          (block
+            (boolean_literal)
+            (block
+              (string_literal
+                (string_content)))))))))
 
 ================================================================================
 Let
-:skip
 ================================================================================
 
+class E {
+  ops() : Int {
+    let a : Int, b : Int
+    in {
+      a <- 10;
+      b <- 20;
+      (
+        let c : Int <- 10 in
+        a - b + c
+      );
+    }
+  };
+};
+
 --------------------------------------------------------------------------------
+
+(source_file
+  (class_item
+    name: (type_identifier)
+    features: (field_declaration_list
+      (method_declaration
+        name: (identifier)
+        parameters: (parameters)
+        return_type: (type_identifier)
+        body: (let_expression
+          name: (identifier)
+          type: (type_identifier)
+          name: (identifier)
+          type: (type_identifier)
+          body: (block
+            (assignment_expression
+              left: (identifier)
+              right: (integer_literal))
+            (assignment_expression
+              left: (identifier)
+              right: (integer_literal))
+            (parenthesized_expression
+              (let_expression
+                name: (identifier)
+                type: (type_identifier)
+                right: (integer_literal)
+                body: (binary_expression
+                  left: (binary_expression
+                    left: (identifier)
+                    right: (identifier))
+                  right: (identifier))))))))))
 
 ================================================================================
 Case
-:skip
 ================================================================================
 
+class E {
+  result : Object <- (
+    let i : Object <- 123 in
+    case i of
+      x : Int => new String;
+      y : Object => new Boolean;
+    esac
+  );
+};
+
 --------------------------------------------------------------------------------
+
+(source_file
+  (class_item
+    name: (type_identifier)
+    features: (field_declaration_list
+      (attribute_declaration
+        name: (identifier)
+        type: (type_identifier)
+        right: (parenthesized_expression
+          (let_expression
+            name: (identifier)
+            type: (type_identifier)
+            right: (integer_literal)
+            body: (case_expression
+              value: (identifier)
+              body: (case_arm
+                pattern: (case_pattern
+                  name: (identifier)
+                  type: (type_identifier))
+                value: (new_expression
+                  type: (type_identifier)))
+              body: (case_arm
+                pattern: (case_pattern
+                  name: (identifier)
+                  type: (type_identifier))
+                value: (new_expression
+                  type: (type_identifier))))))))))
 
 ================================================================================
 New
-:skip
 ================================================================================
 
+class E {
+  cons : Object <- {
+    l <- new Cons;
+    l <- new List;
+  };
+};
+
 --------------------------------------------------------------------------------
+
+(source_file
+  (class_item
+    name: (type_identifier)
+    features: (field_declaration_list
+      (attribute_declaration
+        name: (identifier)
+        type: (type_identifier)
+        right: (block
+          (assignment_expression
+            left: (identifier)
+            right: (new_expression
+              type: (type_identifier)))
+          (assignment_expression
+            left: (identifier)
+            right: (new_expression
+              type: (type_identifier))))))))
 
 ================================================================================
 Isvoid
-:skip
 ================================================================================
 
+class E {
+  void: Bool <- isvoid new Void;
+};
+
 --------------------------------------------------------------------------------
+
+(source_file
+  (class_item
+    name: (type_identifier)
+    features: (field_declaration_list
+      (attribute_declaration
+        name: (identifier)
+        type: (type_identifier)
+        right: (isvoid_expression
+          (new_expression
+            type: (type_identifier)))))))
+
+================================================================================
+Grouped expressions
+================================================================================
+
+class E {
+  paren() : Int {
+    {
+      (0);
+      (2 * (3 + 4));
+    }
+  };
+};
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (class_item
+    name: (type_identifier)
+    features: (field_declaration_list
+      (method_declaration
+        name: (identifier)
+        parameters: (parameters)
+        return_type: (type_identifier)
+        body: (block
+          (parenthesized_expression
+            (integer_literal))
+          (parenthesized_expression
+            (binary_expression
+              left: (integer_literal)
+              right: (parenthesized_expression
+                (binary_expression
+                  left: (integer_literal)
+                  right: (integer_literal))))))))))
 
 ================================================================================
 Arith
-:skip
 ================================================================================
 
+class E {
+  main() : Object {
+    {
+      a <- 1 + 2 * call();
+      b <- isvoid a = true;
+      c <- ~10 <= 20;
+      d <- (x + y * z / w - t) * (x + y) / (z - w) + t * (x / y + z);
+    }
+  };
+};
+
 --------------------------------------------------------------------------------
+
+(source_file
+  (class_item
+    name: (type_identifier)
+    features: (field_declaration_list
+      (method_declaration
+        name: (identifier)
+        parameters: (parameters)
+        return_type: (type_identifier)
+        body: (block
+          (assignment_expression
+            left: (identifier)
+            right: (binary_expression
+              left: (integer_literal)
+              right: (binary_expression
+                left: (integer_literal)
+                right: (dispatch_expression
+                  method: (identifier)
+                  arguments: (arguments)))))
+          (assignment_expression
+            left: (identifier)
+            right: (binary_expression
+              left: (isvoid_expression
+                (identifier))
+              right: (boolean_literal)))
+          (assignment_expression
+            left: (identifier)
+            right: (binary_expression
+              left: (unary_expression
+                (integer_literal))
+              right: (integer_literal)))
+          (assignment_expression
+            left: (identifier)
+            right: (binary_expression
+              left: (binary_expression
+                left: (binary_expression
+                  left: (parenthesized_expression
+                    (binary_expression
+                      left: (binary_expression
+                        left: (identifier)
+                        right: (binary_expression
+                          left: (binary_expression
+                            left: (identifier)
+                            right: (identifier))
+                          right: (identifier)))
+                      right: (identifier)))
+                  right: (parenthesized_expression
+                    (binary_expression
+                      left: (identifier)
+                      right: (identifier))))
+                right: (parenthesized_expression
+                  (binary_expression
+                    left: (identifier)
+                    right: (identifier))))
+              right: (binary_expression
+                left: (identifier)
+                right: (parenthesized_expression
+                  (binary_expression
+                    left: (binary_expression
+                      left: (identifier)
+                      right: (identifier))
+                    right: (identifier)))))))))))

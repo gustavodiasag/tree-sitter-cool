@@ -196,6 +196,7 @@ module.exports = grammar({
       field('value', $._expression),
       'of',
       field('body', sepBy(';', $.case_arm)),
+      optional(';'),
       'esac'
     ),
 
@@ -244,7 +245,7 @@ module.exports = grammar({
       return choice(...table.map(
         ([precedence, operator]) => prec.left(precedence, seq(
           field('left', $._expression),
-           // @ts-ignore
+          // @ts-ignore
           field('operator', operator),
           field('right', $._expression),
       ))));
