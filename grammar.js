@@ -33,7 +33,7 @@ const NON_SPECIAL_PUNCTUATION = [
   '+', ':', '=>', ';', '<-', ',', '@',
 ];
 
-const basicTypes = ['Bool', 'Int', 'IO', 'Object', 'String', 'SELF_TYPE'];
+const primitiveTypes = ['Bool', 'Int', 'IO', 'Object', 'String', 'SELF_TYPE'];
 
 module.exports = grammar({
   name: 'cool',
@@ -59,7 +59,7 @@ module.exports = grammar({
       field('name', $.type_identifier),
       optional(seq(
         'inherits',
-        field('inherits', $.type_identifier))),
+        field('inherits', $._type))),
       field('features', $.field_declaration_list),
       ';',
     ),
@@ -77,9 +77,9 @@ module.exports = grammar({
     ),
 
     attribute_declaration: $ => seq(
-      field('name', $.identifier),
+      field('name', $._field_identifier),
       ':',
-      field('type', $.type_identifier),
+      field('type', $._type),
       optional(seq('<-', field('right', $._expression))),
     ),
 
@@ -87,7 +87,7 @@ module.exports = grammar({
       field('name', $.identifier),
       field('parameters', $.parameters),
       ':', // Is is required for methods to return a type?
-      field('return_type', $.type_identifier),
+      field('return_type', $._type),
       '{',
       field('body', $._expression),
       '}',
@@ -102,7 +102,14 @@ module.exports = grammar({
     parameter: $ => seq(
       field('name', $.identifier),
       ':',
-      field('type', $.type_identifier),
+      field('type', $._type),
+    ),
+
+    // Section - Types
+
+    _type: $ => choice(
+      $.type_identifier,
+      alias(choice(...primitiveTypes), $.primitive_type),
     ),
     
     // Section - Expressions
@@ -138,7 +145,7 @@ module.exports = grammar({
           field('value', $._expression),
           optional(seq(
             '@', 
-            field('type', $.type_identifier))),
+            field('type', $._type))),
           '.',
         )),
       ),
@@ -184,7 +191,7 @@ module.exports = grammar({
       sepBy(',', seq(
         field('name', $.identifier),
         ':',
-        field('type', $.type_identifier),
+        field('type', $._type),
         optional(seq('<-', field('right', $._expression))),
       )),
       'in',
@@ -209,12 +216,12 @@ module.exports = grammar({
     case_pattern: $ => seq(
       field('name', $.identifier),
       ':',
-      field('type', $.type_identifier),
+      field('type', $._type),
     ),
 
     new_expression: $ => seq(
       'new',
-      field('type', $.type_identifier),
+      field('type', $._type),
     ),
 
     isvoid_expression: $ => prec(PREC.isvoid, seq(
@@ -227,8 +234,6 @@ module.exports = grammar({
       $._expression,
     )),
 
-    // Does the complement operation have the same precedence that that of the
-    // `not` construct?
     unary_expression: $ => prec(PREC.comp, seq(
       '~',
       $._expression,
@@ -306,9 +311,10 @@ module.exports = grammar({
     * Type identifiers begin with a capital letter; object identifiers begin
     * with a lower case letter.
     */
+    identifier: _ => /[_\p{XIDStart}][\p{XID_Continue}]*/,
     type_identifier: $ => /[\p{Lu}][_\p{XID_Continue}]*/,
 
-    identifier: _ => /[_\p{XIDStart}][\p{XID_Continue}]*/,
+    _field_identifier: $ => alias($.identifier, $.field_identifier),
 
     self: _ => 'self',
   },
@@ -327,7 +333,8 @@ function sepBy1(sep, rule) {
 }
 
 /**
- * Creates a rule to optionally match one or more of the rules separated by the separator.
+ * Creates a rule to optionally match one or more of the rules separated by the
+ * separator.
  *
  * @param {RuleOrLiteral} sep - The separator to use.
  * @param {RuleOrLiteral} rule

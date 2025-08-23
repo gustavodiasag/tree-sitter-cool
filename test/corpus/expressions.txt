@@ -15,16 +15,16 @@ class E {
     name: (type_identifier)
     features: (field_declaration_list
       (attribute_declaration
-        name: (identifier)
-        type: (type_identifier)
+        name: (field_identifier)
+        type: (primitive_type)
         right: (integer_literal))
       (attribute_declaration
-        name: (identifier)
-        type: (type_identifier)
+        name: (field_identifier)
+        type: (primitive_type)
         right: (boolean_literal))
       (attribute_declaration
-        name: (identifier)
-        type: (type_identifier)
+        name: (field_identifier)
+        type: (primitive_type)
         right: (string_literal
           (string_content))))))
 
@@ -45,7 +45,7 @@ class E {
       (method_declaration
         name: (identifier)
         parameters: (parameters)
-        return_type: (type_identifier)
+        return_type: (primitive_type)
         body: (identifier)))))
 
 ================================================================================
@@ -67,7 +67,7 @@ class E {
       (method_declaration
         name: (identifier)
         parameters: (parameters)
-        return_type: (type_identifier)
+        return_type: (primitive_type)
         body: (assignment_expression
           left: (identifier)
           right: (string_literal
@@ -102,7 +102,7 @@ class F inherits E {
       (method_declaration
         name: (identifier)
         parameters: (parameters)
-        return_type: (type_identifier)
+        return_type: (primitive_type)
         body: (boolean_literal))))
   (class_item
     name: (type_identifier)
@@ -111,12 +111,12 @@ class F inherits E {
       (method_declaration
         name: (identifier)
         parameters: (parameters)
-        return_type: (type_identifier)
+        return_type: (primitive_type)
         body: (boolean_literal))
       (method_declaration
         name: (identifier)
         parameters: (parameters)
-        return_type: (type_identifier)
+        return_type: (primitive_type)
         body: (binary_expression
           left: (dispatch_expression
             method: (identifier)
@@ -154,7 +154,7 @@ class E {
       (method_declaration
         name: (identifier)
         parameters: (parameters)
-        return_type: (type_identifier)
+        return_type: (primitive_type)
         body: (block
           (if_expression
             condition: (identifier)
@@ -193,7 +193,7 @@ class E {
       (method_declaration
         name: (identifier)
         parameters: (parameters)
-        return_type: (type_identifier)
+        return_type: (primitive_type)
         body: (block
           (assignment_expression
             left: (identifier)
@@ -246,8 +246,8 @@ class E {
     name: (type_identifier)
     features: (field_declaration_list
       (attribute_declaration
-        name: (identifier)
-        type: (type_identifier)
+        name: (field_identifier)
+        type: (primitive_type)
         right: (block
           (integer_literal)
           (block
@@ -283,12 +283,12 @@ class E {
       (method_declaration
         name: (identifier)
         parameters: (parameters)
-        return_type: (type_identifier)
+        return_type: (primitive_type)
         body: (let_expression
           name: (identifier)
-          type: (type_identifier)
+          type: (primitive_type)
           name: (identifier)
-          type: (type_identifier)
+          type: (primitive_type)
           body: (block
             (assignment_expression
               left: (identifier)
@@ -299,7 +299,7 @@ class E {
             (parenthesized_expression
               (let_expression
                 name: (identifier)
-                type: (type_identifier)
+                type: (primitive_type)
                 right: (integer_literal)
                 body: (binary_expression
                   left: (binary_expression
@@ -316,7 +316,7 @@ class E {
     let i : Object <- 123 in
     case i of
       x : Int => new String;
-      y : Object => new Boolean;
+      y : Object => new Bool;
     esac
   );
 };
@@ -328,27 +328,27 @@ class E {
     name: (type_identifier)
     features: (field_declaration_list
       (attribute_declaration
-        name: (identifier)
-        type: (type_identifier)
+        name: (field_identifier)
+        type: (primitive_type)
         right: (parenthesized_expression
           (let_expression
             name: (identifier)
-            type: (type_identifier)
+            type: (primitive_type)
             right: (integer_literal)
             body: (case_expression
               value: (identifier)
               body: (case_arm
                 pattern: (case_pattern
                   name: (identifier)
-                  type: (type_identifier))
+                  type: (primitive_type))
                 value: (new_expression
-                  type: (type_identifier)))
+                  type: (primitive_type)))
               body: (case_arm
                 pattern: (case_pattern
                   name: (identifier)
-                  type: (type_identifier))
+                  type: (primitive_type))
                 value: (new_expression
-                  type: (type_identifier))))))))))
+                  type: (primitive_type))))))))))
 
 ================================================================================
 New
@@ -368,8 +368,8 @@ class E {
     name: (type_identifier)
     features: (field_declaration_list
       (attribute_declaration
-        name: (identifier)
-        type: (type_identifier)
+        name: (field_identifier)
+        type: (primitive_type)
         right: (block
           (assignment_expression
             left: (identifier)
@@ -395,8 +395,8 @@ class E {
     name: (type_identifier)
     features: (field_declaration_list
       (attribute_declaration
-        name: (identifier)
-        type: (type_identifier)
+        name: (field_identifier)
+        type: (primitive_type)
         right: (isvoid_expression
           (new_expression
             type: (type_identifier)))))))
@@ -423,7 +423,7 @@ class E {
       (method_declaration
         name: (identifier)
         parameters: (parameters)
-        return_type: (type_identifier)
+        return_type: (primitive_type)
         body: (block
           (parenthesized_expression
             (integer_literal))
@@ -459,7 +459,7 @@ class E {
       (method_declaration
         name: (identifier)
         parameters: (parameters)
-        return_type: (type_identifier)
+        return_type: (primitive_type)
         body: (block
           (assignment_expression
             left: (identifier)

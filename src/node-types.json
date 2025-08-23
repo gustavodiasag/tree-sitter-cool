@@ -185,7 +185,7 @@
         "required": true,
         "types": [
           {
-            "type": "identifier",
+            "type": "field_identifier",
             "named": true
           }
         ]
@@ -272,6 +272,10 @@
         "multiple": false,
         "required": true,
         "types": [
+          {
+            "type": "primitive_type",
+            "named": true
+          },
           {
             "type": "type_identifier",
             "named": true
@@ -781,6 +785,10 @@
         "required": true,
         "types": [
           {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
             "type": "type_identifier",
             "named": true
           }
@@ -806,6 +814,10 @@
         "multiple": false,
         "required": false,
         "types": [
+          {
+            "type": "primitive_type",
+            "named": true
+          },
           {
             "type": "type_identifier",
             "named": true
@@ -852,6 +864,10 @@
         "multiple": false,
         "required": false,
         "types": [
+          {
+            "type": "primitive_type",
+            "named": true
+          },
           {
             "type": "type_identifier",
             "named": true
@@ -1461,6 +1477,10 @@
         "required": false,
         "types": [
           {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
             "type": "type_identifier",
             "named": true
           }
@@ -1575,6 +1595,10 @@
         "required": true,
         "types": [
           {
+            "type": "primitive_type",
+            "named": true
+          },
+          {
             "type": "type_identifier",
             "named": true
           }
@@ -1590,6 +1614,10 @@
         "multiple": false,
         "required": true,
         "types": [
+          {
+            "type": "primitive_type",
+            "named": true
+          },
           {
             "type": "type_identifier",
             "named": true
@@ -1699,6 +1727,10 @@
         "multiple": false,
         "required": true,
         "types": [
+          {
+            "type": "primitive_type",
+            "named": true
+          },
           {
             "type": "type_identifier",
             "named": true
@@ -2194,6 +2226,10 @@
     "named": false
   },
   {
+    "type": "field_identifier",
+    "named": true
+  },
+  {
     "type": "identifier",
     "named": true
   },
@@ -2240,6 +2276,10 @@
   {
     "type": "pool",
     "named": false
+  },
+  {
+    "type": "primitive_type",
+    "named": true
   },
   {
     "type": "self",

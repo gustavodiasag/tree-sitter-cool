@@ -15,10 +15,10 @@ class Cons inherits List {
     inherits: (type_identifier)
     features: (field_declaration_list
       (attribute_declaration
-        name: (identifier)
-        type: (type_identifier))
+        name: (field_identifier)
+        type: (primitive_type))
       (attribute_declaration
-        name: (identifier)
+        name: (field_identifier)
         type: (type_identifier)))))
 
 ================================================================================
@@ -42,7 +42,7 @@ class C inherits P {
       (method_declaration
         name: (identifier)
         parameters: (parameters)
-        return_type: (type_identifier)
+        return_type: (primitive_type)
         body: (integer_literal))))
   (class_item
     name: (type_identifier)
@@ -51,7 +51,7 @@ class C inherits P {
       (method_declaration
         name: (identifier)
         parameters: (parameters)
-        return_type: (type_identifier)
+        return_type: (primitive_type)
         body: (string_literal
           (string_content))))))
 
@@ -59,7 +59,7 @@ class C inherits P {
 Methods
 ================================================================================
 
-class String {
+class M {
   length() : Int {
     10
   };
@@ -84,15 +84,15 @@ class String {
       (method_declaration
         name: (identifier)
         parameters: (parameters)
-        return_type: (type_identifier)
+        return_type: (primitive_type)
         body: (integer_literal))
       (method_declaration
         name: (identifier)
         parameters: (parameters
           (parameter
             name: (identifier)
-            type: (type_identifier)))
-        return_type: (type_identifier)
+            type: (primitive_type)))
+        return_type: (primitive_type)
         body: (block
           (binary_expression
             left: (self)
@@ -102,11 +102,11 @@ class String {
         parameters: (parameters
           (parameter
             name: (identifier)
-            type: (type_identifier))
+            type: (primitive_type))
           (parameter
             name: (identifier)
-            type: (type_identifier)))
-        return_type: (type_identifier)
+            type: (primitive_type)))
+        return_type: (primitive_type)
         body: (dispatch_expression
           value: (self)
           method: (identifier)

@@ -18,7 +18,7 @@ class S {
       (method_declaration
         name: (identifier)
         parameters: (parameters)
-        return_type: (type_identifier)
+        return_type: (primitive_type)
         body: (string_literal
           (string_content))))))
 

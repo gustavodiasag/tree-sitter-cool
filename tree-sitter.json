@@ -9,6 +9,18 @@
       "file-types": [
         "cl"
       ],
+      "highlights": [
+        "queries/highlights.scm"
+      ],
+      "indents": [
+        "queries/indents.scm"
+      ],
+      "injections": [
+        "queries/injections.scm"
+      ],
+      "locals": [
+        "queries/locals.scm"
+      ],
       "injection-regex": "^cool$",
       "class-name": "TreeSitterCool"
     }

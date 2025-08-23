@@ -39,7 +39,7 @@
                   "name": "inherits",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "type_identifier"
+                    "name": "_type"
                   }
                 }
               ]
@@ -109,7 +109,7 @@
           "name": "name",
           "content": {
             "type": "SYMBOL",
-            "name": "identifier"
+            "name": "_field_identifier"
           }
         },
         {
@@ -121,7 +121,7 @@
           "name": "type",
           "content": {
             "type": "SYMBOL",
-            "name": "type_identifier"
+            "name": "_type"
           }
         },
         {
@@ -179,7 +179,7 @@
           "name": "return_type",
           "content": {
             "type": "SYMBOL",
-            "name": "type_identifier"
+            "name": "_type"
           }
         },
         {
@@ -266,8 +266,51 @@
           "name": "type",
           "content": {
             "type": "SYMBOL",
-            "name": "type_identifier"
+            "name": "_type"
           }
+        }
+      ]
+    },
+    "_type": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "type_identifier"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "Bool"
+              },
+              {
+                "type": "STRING",
+                "value": "Int"
+              },
+              {
+                "type": "STRING",
+                "value": "IO"
+              },
+              {
+                "type": "STRING",
+                "value": "Object"
+              },
+              {
+                "type": "STRING",
+                "value": "String"
+              },
+              {
+                "type": "STRING",
+                "value": "SELF_TYPE"
+              }
+            ]
+          },
+          "named": true,
+          "value": "primitive_type"
         }
       ]
     },
@@ -407,7 +450,7 @@
                               "name": "type",
                               "content": {
                                 "type": "SYMBOL",
-                                "name": "type_identifier"
+                                "name": "_type"
                               }
                             }
                           ]
@@ -672,7 +715,7 @@
                       "name": "type",
                       "content": {
                         "type": "SYMBOL",
-                        "name": "type_identifier"
+                        "name": "_type"
                       }
                     },
                     {
@@ -731,7 +774,7 @@
                             "name": "type",
                             "content": {
                               "type": "SYMBOL",
-                              "name": "type_identifier"
+                              "name": "_type"
                             }
                           },
                           {
@@ -908,7 +951,7 @@
           "name": "type",
           "content": {
             "type": "SYMBOL",
-            "name": "type_identifier"
+            "name": "_type"
           }
         }
       ]
@@ -925,7 +968,7 @@
           "name": "type",
           "content": {
             "type": "SYMBOL",
-            "name": "type_identifier"
+            "name": "_type"
           }
         }
       ]
@@ -1261,13 +1304,22 @@
         }
       ]
     },
+    "identifier": {
+      "type": "PATTERN",
+      "value": "[_\\p{XIDStart}][\\p{XID_Continue}]*"
+    },
     "type_identifier": {
       "type": "PATTERN",
       "value": "[\\p{Lu}][_\\p{XID_Continue}]*"
     },
-    "identifier": {
-      "type": "PATTERN",
-      "value": "[_\\p{XIDStart}][\\p{XID_Continue}]*"
+    "_field_identifier": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "identifier"
+      },
+      "named": true,
+      "value": "field_identifier"
     },
     "self": {
       "type": "STRING",
