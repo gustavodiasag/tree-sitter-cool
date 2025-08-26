@@ -1,7 +1,7 @@
 [package]
 name = "tree-sitter-cool"
 description = "Tree-sitter grammar for the Cool programming language"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Gustavo Dias de Aguiar <gustavodias.aguiar1@gmail.com>"]
 license = "MIT"
 readme = "README.md"

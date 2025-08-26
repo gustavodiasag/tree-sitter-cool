@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 project(tree-sitter-cool
-        VERSION "0.1.0"
+        VERSION "0.1.1"
         DESCRIPTION "Tree-sitter grammar for the Cool programming language"
         HOMEPAGE_URL "https://github.com/gustavodiasag/tree-sitter-cool"
         LANGUAGES C)
