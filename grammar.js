@@ -1,6 +1,6 @@
 /**
- * @file Tree-sitter grammar for the Cool programming language
- * @author Gustavo Dias de Aguiar <gustavodias.aguiar1@gmail.com>
+ * @file Cool grammar for tree-sitter
+ * @author Gustavo Aguiar <gustavodias.aguiar1@gmail.com>
  * @license MIT
  */
 
@@ -28,7 +28,7 @@ const PREC = {
   assign: 0,
 }
 
-const NON_SPECIAL_PUNCTUATION = [
+const TOKEN_TREE_NON_SPECIAL_PUNCTUATION = [
   '=', '<=', '<', '~', '/', '*', '-',
   '+', ':', '=>', ';', '<-', ',', '@',
 ];
@@ -49,6 +49,11 @@ module.exports = grammar({
     $._error_sentinel,
   ],
 
+  inline: $ => [
+    $._field_identifier,
+    $._non_special_token,
+  ],
+
   rules: {
     source_file: $ => repeat($.class_item),
 
@@ -57,9 +62,11 @@ module.exports = grammar({
     class_item: $ => seq(
       'class',
       field('name', $.type_identifier),
-      optional(seq(
-        'inherits',
-        field('inherits', $._type))),
+      optional(
+        seq(
+          'inherits',
+          field('inherits', $._type))
+      ),
       field('features', $.field_declaration_list),
       ';',
     ),
@@ -86,7 +93,7 @@ module.exports = grammar({
     method_declaration: $ => seq(
       field('name', $.identifier),
       field('parameters', $.parameters),
-      ':', // Is is required for methods to return a type?
+      ':',
       field('return_type', $._type),
       '{',
       field('body', $._expression),
@@ -311,12 +318,18 @@ module.exports = grammar({
     * Type identifiers begin with a capital letter; object identifiers begin
     * with a lower case letter.
     */
-    identifier: _ => /[_\p{XIDStart}][\p{XID_Continue}]*/,
+    identifier: _ => /[_\p{XIDStart}][_\p{XID_Continue}]*/,
     type_identifier: $ => /[\p{Lu}][_\p{XID_Continue}]*/,
 
     _field_identifier: $ => alias($.identifier, $.field_identifier),
 
     self: _ => 'self',
+
+    _non_special_token: $ => choice(
+      $_literal, $.identifier, $.self,
+      alias(choice(...primitiveTypes), $.primitive_type),
+      prec.right(repeat1(choice(...TOKEN_TREE_NON_SPECIAL_PUNCTUATION))),
+    ),
   },
 });
 
