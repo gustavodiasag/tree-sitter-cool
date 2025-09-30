@@ -326,7 +326,7 @@ module.exports = grammar({
     self: _ => 'self',
 
     _non_special_token: $ => choice(
-      $_literal, $.identifier, $.self,
+      $._literal, $.identifier, $.self,
       alias(choice(...primitiveTypes), $.primitive_type),
       prec.right(repeat1(choice(...TOKEN_TREE_NON_SPECIAL_PUNCTUATION))),
     ),
