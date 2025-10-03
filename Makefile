@@ -4,7 +4,7 @@ endif
 
 LANGUAGE_NAME := cool
 HOMEPAGE_URL := https://github.com/gustavodiasag/tree-sitter-cool
-VERSION := 0.2.1
+VERSION := 0.2.0
 
 # repository
 SRC_DIR := src

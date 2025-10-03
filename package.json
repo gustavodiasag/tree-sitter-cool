@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-cool",
-  "version": "0.2.1",
+  "version": "0.2.0",
   "description": "Tree-sitter grammar for the Cool programming language",
   "repository": "https://github.com/gustavodiasag/tree-sitter-cool",
   "license": "MIT",
