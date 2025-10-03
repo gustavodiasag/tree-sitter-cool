@@ -4,7 +4,9 @@
   name: (identifier) @definition.var)
 
 (let_expression
-  name: (identifier) @definition.var)
+  bindings: (bindings
+    (binding
+      name: (identifier) @definition.var)))
 
 ; Types
 

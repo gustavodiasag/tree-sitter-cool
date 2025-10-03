@@ -285,10 +285,13 @@ class E {
         parameters: (parameters)
         return_type: (primitive_type)
         body: (let_expression
-          name: (identifier)
-          type: (primitive_type)
-          name: (identifier)
-          type: (primitive_type)
+          bindings: (bindings
+            (binding
+              name: (identifier)
+              type: (primitive_type))
+            (binding
+              name: (identifier)
+              type: (primitive_type)))
           body: (block
             (assignment_expression
               left: (identifier)
@@ -298,9 +301,11 @@ class E {
               right: (integer_literal))
             (parenthesized_expression
               (let_expression
-                name: (identifier)
-                type: (primitive_type)
-                right: (integer_literal)
+                bindings: (bindings
+                  (binding
+                    name: (identifier)
+                    type: (primitive_type)
+                    right: (integer_literal)))
                 body: (binary_expression
                   left: (binary_expression
                     left: (identifier)
@@ -332,9 +337,11 @@ class E {
         type: (primitive_type)
         right: (parenthesized_expression
           (let_expression
-            name: (identifier)
-            type: (primitive_type)
-            right: (integer_literal)
+            bindings: (bindings
+              (binding
+                name: (identifier)
+                type: (primitive_type)
+                right: (integer_literal)))
             body: (case_expression
               value: (identifier)
               body: (case_arm

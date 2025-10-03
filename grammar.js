@@ -195,14 +195,18 @@ module.exports = grammar({
 
     let_expression: $ => seq(
       'let',
-      sepBy(',', seq(
-        field('name', $.identifier),
-        ':',
-        field('type', $._type),
-        optional(seq('<-', field('right', $._expression))),
-      )),
+      field('bindings', $.bindings),
       'in',
       field('body', $._expression),
+    ),
+
+    bindings: $ => sepBy1(',', $.binding),
+
+    binding: $ => seq(
+      field('name', $.identifier),
+      ':',
+      field('type', $._type),
+      optional(seq('<-', field('right', $._expression))),
     ),
 
     case_expression: $ => seq(
